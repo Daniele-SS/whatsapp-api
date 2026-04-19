@@ -1,9 +1,9 @@
-/************************************************************************************
+/********************************************************************************
  * Objetivo: Arquivo responsável pela criação da API do projeto de WhatsApp
  * Data: 08/04/2026
  * Autora: Daniele Silva Santos
  * Versão: 1.0
- ************************************************************************************/
+ ********************************************************************************/
 
 //Import das depedências para criar a API
 const express   = require ('express')
@@ -78,14 +78,41 @@ app.get('/v1/whatsapp/dados/all/mensagens/usuario/:contato', function(request, r
 })
 
 
-app.get('/v1/whatsapp/dados/usuario/contato', function(request, response){
-    
+app.get('/v1/whatsapp/dados/usuario/contato/:numero', function(request, response){
+    let numero  =  request.params.numero
+    let contato = request.query.contato
+
+    let todasMensagens =  listaDeContatos.getConversaUsuario(numero,contato)
+
+    if(todasMensagens) {
+        response.status(200)
+        response.json(todasMensagens)
+        } else {
+            response.status(404)
+            response.json({"message": "Nenhum dado encontrado."})
+        }
 })
 
 
-app.get('/v1/whatsapp/dados/help', function(request, response){
-    
+app.get('/v1/whatsapp/pesquisa/:numero', function(request, response){
+    let numero  =  request.params.numero
+    let palavra = request.query.palavra
+
+    let mensagemEcontrada =  listaDeContatos.getConversaSelecionada(numero, palavra)
+
+    if(mensagemEcontrada) {
+        response.status(200)
+        response.json(mensagemEcontrada)
+        } else {
+            response.status(404)
+            response.json({"message": "Nenhum dado encontrado."})
+        }
 })
+
+
+// app.get('/v1/whatsapp/dados/help', function(request, response){
+    
+// })
 
 
 app.listen(8080, function(){

@@ -80,16 +80,73 @@ function getAllMessages(contato) {
     return all
 }
 
-function getConversaUsuario() {
+function getConversaUsuario(usuario, contato) {
+    let conversas = {}
+    let bola = false 
 
+    listaDeContatos.contatos['whats-users'].forEach(function(messages){
+        if(Number(messages.number) == Number(usuario)) {
+            
+            messages.contacts.forEach(function(contac){
+                if(contac.name.toLowerCase() == contato.toLowerCase()) {
+                    conversas.name = contac.name
+                    conversas.mensagem = contac.messages
+
+                    bola = true
+                } 
+            })
+        }
+    })
+
+    if(bola) {
+        return conversas
+    } else {
+        return false
+    }
+}
+
+function getConversaSelecionada(numero, pesquisa) {
+    let selecionaConversa = {}
+    let vetor = [] 
+    let retornoFalso = false 
+
+    listaDeContatos.contatos['whats-users'].forEach(function(usuario){
+        if(Number(usuario.number) == Number(numero) ) {
+
+            usuario.contacts.forEach(function(contato){
+                
+                contato.messages.forEach(function(mensagem){
+
+                    if(mensagem.content.toUpperCase().includes(pesquisa.toUpperCase())) {
+                        vetor.push({
+                            nome: contato.name,
+                            numero: contato.number,
+                            mensagens: contato.messages,
+                        })
+
+                        retornoFalso = true
+                    }
+                })
+            })
+        }
+    })
+
+    if(retornoFalso) {
+        return selecionaConversa.conversas = vetor
+    } else {
+        return false
+    }
 }
 
 // console.log(getAllMessages("11987876567"))
+// console.log(getConversaUsuario("11955577796", "Franklin Silva"))
+// console.log(getConversaSelecionada('11955577796', 'como'))
 
 module.exports = { 
     getDados,
     getContaProfile,
     getContatosPessoais,
     getAllMessages,
-    getConversaUsuario
+    getConversaUsuario,
+    getConversaSelecionada
 }
