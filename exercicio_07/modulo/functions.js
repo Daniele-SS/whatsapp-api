@@ -82,23 +82,23 @@ function getAllMessages(contato) {
 
 function getConversaUsuario(usuario, contato) {
     let conversas = {}
-    let bola = false 
+    let retornoFalso = false 
 
     listaDeContatos.contatos['whats-users'].forEach(function(messages){
         if(Number(messages.number) == Number(usuario)) {
             
             messages.contacts.forEach(function(contac){
-                if(contac.name.toLowerCase() == contato.toLowerCase()) {
+                if(contac.name == contato) {
                     conversas.name = contac.name
                     conversas.mensagem = contac.messages
 
-                    bola = true
+                    retornoFalso = true
                 } 
             })
         }
     })
 
-    if(bola) {
+    if(retornoFalso) {
         return conversas
     } else {
         return false
@@ -117,7 +117,7 @@ function getConversaSelecionada(numero, pesquisa) {
                 
                 contato.messages.forEach(function(mensagem){
 
-                    if(mensagem.content.toUpperCase().includes(pesquisa.toUpperCase())) {
+                    if(mensagem.content.includes(pesquisa)) {
                         vetor.push({
                             nome: contato.name,
                             numero: contato.number,
@@ -137,10 +137,6 @@ function getConversaSelecionada(numero, pesquisa) {
         return false
     }
 }
-
-// console.log(getAllMessages("11987876567"))
-// console.log(getConversaUsuario("11955577796", "Franklin Silva"))
-// console.log(getConversaSelecionada('11955577796', 'como'))
 
 module.exports = { 
     getDados,
